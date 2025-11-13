@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DocumentDownloadController;
 use App\Http\Controllers\CashfreeWebhookController;

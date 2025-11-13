@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use App\Models\Document;
 use Livewire\WithPagination;
@@ -17,6 +19,30 @@ class DocumentSearch extends Component
     public $anchal = '';
     public $mauza = '';
     public $thana_no = '';
+    public $result = false;
+    public $showModal = false;
+
+    protected $rules = [
+        'document_type' => 'required',
+        'district' => 'required',
+        'anchal' => 'required',
+        'mauza' => 'required',
+        'thana_no' => 'required'
+    ];
+
+    public function search()
+    {
+        $this->validate();
+        $this->resetPage();
+        $this->result = true;
+    }
+
+   public function resetSelection()
+{
+    $this->reset(['document_type', 'district', 'anchal', 'mauza', 'thana_no']);
+    $this->result = false;
+    $this->resetPage();
+}
 
     public function getDocumentTypesProperty(): Collection
     {
@@ -78,29 +104,32 @@ class DocumentSearch extends Component
 
     public function render(): View
     {
-        $query = Document::query()->where('is_active', true);
+        $documents = collect();
+        if ($this->result) {
+            $query = Document::query()->where('is_active', true);
 
-        if ($this->document_type) {
-            $query->where('document_type', 'like', '%' . $this->document_type . '%');
+            if ($this->document_type) {
+                $query->where('document_type', 'like', '%' . $this->document_type . '%');
+            }
+
+            if ($this->district) {
+                $query->where('district', 'like', '%' . $this->district . '%');
+            }
+
+            if ($this->anchal) {
+                $query->where('anchal', 'like', '%' . $this->anchal . '%');
+            }
+
+            if ($this->mauza) {
+                $query->where('mauza', 'like', '%' . $this->mauza . '%');
+            }
+
+            if ($this->thana_no) {
+                $query->where('thana_no', 'like', '%' . $this->thana_no . '%');
+            }
+
+            $documents = $query->paginate(10);
         }
-
-        if ($this->district) {
-            $query->where('district', 'like', '%' . $this->district . '%');
-        }
-
-        if ($this->anchal) {
-            $query->where('anchal', 'like', '%' . $this->anchal . '%');
-        }
-
-        if ($this->mauza) {
-            $query->where('mauza', 'like', '%' . $this->mauza . '%');
-        }
-
-        if ($this->thana_no) {
-            $query->where('thana_no', 'like', '%' . $this->thana_no . '%');
-        }
-
-        $documents = $query->paginate(10);
 
         return view('livewire.document-search', [
             'documents' => $documents,
