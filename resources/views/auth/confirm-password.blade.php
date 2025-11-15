@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <h2 class="text-xl font-semibold text-center mb-6">Confirm your password</h2>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>
@@ -18,7 +19,8 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <div class="flex justify-end mt-4">
+        <div class="flex justify-between mt-6">
+            <a href="{{ route('login') }}" class="underline text-sm text-gray-600 hover:text-gray-900">Back to login</a>
             <x-primary-button>
                 {{ __('Confirm') }}
             </x-primary-button>

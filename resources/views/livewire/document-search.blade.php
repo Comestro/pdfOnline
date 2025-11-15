@@ -1,4 +1,22 @@
 <div class="min-h-screen bg-gray-50">
+    <header class="w-full bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-end gap-4">
+            @if (Route::has('login'))
+                @auth
+                    <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="px-4 py-1.5 border rounded text-sm text-gray-700 hover:bg-gray-50">Log out</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="px-4 py-1.5 text-sm text-gray-700">Log in</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="px-4 py-1.5 border rounded text-sm text-gray-700 hover:bg-gray-50">Register</a>
+                    @endif
+                @endauth
+            @endif
+        </div>
+    </header>
     <img src="{{ asset('banner.png') }}" alt="Banner" class="w-full h-auto object-cover">
 
     <div class="max-w-7xl mx-auto px-6 py-8">
