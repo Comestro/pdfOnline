@@ -13,6 +13,9 @@
 
         <!-- Scripts -->
           <script src="https://cdn.tailwindcss.com"></script>
+          <!-- <script src="{{ asset('vendor/pdfjs/build/pdf.js') }}"></script> -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
