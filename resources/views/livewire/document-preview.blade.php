@@ -46,6 +46,7 @@
             </div>
             
         </div>
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Khata No. - <span class="text-gray-500">{{ $document->title }}</span></h1>
 
         <!-- Document Preview -->
         <div class="preview-container relative rounded-lg mb-8 overflow-hidden">
