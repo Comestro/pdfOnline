@@ -5,9 +5,12 @@
     use Filament\Actions\BulkActionGroup;
     use Filament\Actions\DeleteBulkAction;
     use Filament\Actions\EditAction;
+    use Filament\Actions\ViewAction;
     use Filament\Tables\Columns\IconColumn;
     use Filament\Tables\Columns\TextColumn;
     use Filament\Tables\Columns\ToggleColumn;
+    use Filament\Tables\Filters\SelectFilter;
+    use Filament\Tables\Filters\TernaryFilter;
     use Filament\Tables\Table;
 
     class DocumentsTable
@@ -17,49 +20,114 @@
             return $table
                 ->columns([
                     TextColumn::make('title')
-                        ->searchable(),
+                        ->searchable()
+                        ->sortable()
+                        ->weight('bold')
+                        ->icon('heroicon-o-document')
+                        ->wrap(),
+                        
                     TextColumn::make('document_type')
-                        ->searchable(),
+                        ->badge()
+                        ->color(fn (string $state): string => match ($state) {
+                            'Registry' => 'success',
+                            'Girdawari' => 'info',
+                            'Khatauni' => 'warning',
+                            default => 'gray',
+                        })
+                        ->searchable()
+                        ->sortable(),
+                        
                     TextColumn::make('district')
-                        ->searchable(),
+                        ->icon('heroicon-o-map-pin')
+                        ->searchable()
+                        ->sortable()
+                        ->toggleable(),
+                        
                     TextColumn::make('anchal')
-                        ->searchable(),
+                        ->label('Anchal')
+                        ->searchable()
+                        ->sortable()
+                        ->toggleable(),
+                        
                     TextColumn::make('mauza')
-                        ->searchable(),
+                        ->searchable()
+                        ->toggleable(),
+                        
                     TextColumn::make('thana_no')
-                        ->searchable(),
+                        ->label('Thana No.')
+                        ->badge()
+                        ->color('info')
+                        ->searchable()
+                        ->sortable(),
+                        
                     TextColumn::make('additional_title')
                         ->label('File Title')
-                        ->toggleable(isToggledHiddenByDefault: true),
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->wrap(),
+                        
                     TextColumn::make('additional_file_path')
                         ->label('File Name')
                         ->formatStateUsing(fn ($state, $record) => basename($state ?? $record->file_path))
-                        ->searchable(),
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->color('gray')
+                        ->searchable()
+                        ->toggleable(),
+                        
                     TextColumn::make('price')
                         ->label('Price')
                         ->getStateUsing(fn ($record) => $record->additional_price ?? $record->price)
                         ->money('INR', true)
+                        ->sortable()
+                        ->weight('semibold')
+                        ->color('success'),
+                        
+                    IconColumn::make('is_active')
+                        ->label('Status')
+                        ->boolean()
+                        ->trueIcon('heroicon-o-check-circle')
+                        ->falseIcon('heroicon-o-x-circle')
+                        ->trueColor('success')
+                        ->falseColor('danger')
                         ->sortable(),
-                    ToggleColumn::make('is_active'),
+                        
                     TextColumn::make('created_at')
-                        ->dateTime()
+                        ->label('Created')
+                        ->dateTime('M d, Y H:i')
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: true),
+                        
                     TextColumn::make('updated_at')
-                        ->dateTime()
+                        ->label('Updated')
+                        ->dateTime('M d, Y H:i')
                         ->sortable()
                         ->toggleable(isToggledHiddenByDefault: true),
                 ])
                 ->filters([
-                    //
+                    SelectFilter::make('document_type')
+                        ->label('Document Type')
+                        ->options([
+                            'Registry' => 'Registry',
+                            'Girdawari' => 'Girdawari',
+                            'Khatauni' => 'Khatauni',
+                        ]),
+                    SelectFilter::make('district')
+                        ->label('District'),
+                    TernaryFilter::make('is_active')
+                        ->label('Active Status')
+                        ->placeholder('All documents')
+                        ->trueLabel('Active only')
+                        ->falseLabel('Inactive only'),
                 ])
                 ->recordActions([
+                    ViewAction::make(),
                     EditAction::make(),
                 ])
                 ->toolbarActions([
                     BulkActionGroup::make([
                         DeleteBulkAction::make(),
                     ]),
-                ]);
+                ])
+                ->defaultSort('created_at', 'desc')
+                ->striped();
         }
     }

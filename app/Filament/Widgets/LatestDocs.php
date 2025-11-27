@@ -4,62 +4,80 @@ namespace App\Filament\Widgets;
 
 use App\Models\Document;
 use Filament\Actions\BulkActionGroup;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Illuminate\Database\Eloquent\Builder;
-use recentdocs;
 
 class LatestDocs extends TableWidget
 {
     protected static ?int $sort = 2;
     protected int | string | array $columnSpan = 'full';
+    
+    protected static ?string $heading = 'Latest Documents';
+    
     public function table(Table $table): Table
     {
         return $table
             ->query(fn(): Builder => Document::query()->latest()->limit(5))
             ->columns([
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->weight('bold')
+                    ->icon('heroicon-o-document')
+                    ->sortable(),
+                    
                 TextColumn::make('document_type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Registry' => 'success',
+                        'Girdawari' => 'info',
+                        'Khatauni' => 'warning',
+                        default => 'gray',
+                    })
                     ->searchable(),
-                    TextColumn::make('district')
-                        ->searchable(),
-                    TextColumn::make('anchal')
-                        ->searchable(),
-                    TextColumn::make('mauza')
-                        ->searchable(),
-                    TextColumn::make('thana_no')
-                        ->searchable(),
-                    TextColumn::make('file_path')
-                        ->searchable(),
-                    TextColumn::make('price')
-                        ->money('INR', true)
-                        ->sortable(),
-                    ToggleColumn::make('is_active'),
-                    TextColumn::make('created_at')
-                        ->dateTime()
-                        ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: true),
-                    TextColumn::make('updated_at')
-                        ->dateTime()
-                        ->sortable()
-                        ->toggleable(isToggledHiddenByDefault: true),
-            ])->paginated([5])
-            ->filters([
-                //
+                    
+                TextColumn::make('district')
+                    ->icon('heroicon-o-map-pin')
+                    ->searchable()
+                    ->toggleable(),
+                    
+                TextColumn::make('anchal')
+                    ->label('Anchal')
+                    ->searchable()
+                    ->toggleable(),
+                    
+                TextColumn::make('mauza')
+                    ->searchable()
+                    ->toggleable(),
+                    
+                TextColumn::make('thana_no')
+                    ->label('Thana No.')
+                    ->searchable()
+                    ->toggleable(),
+                    
+                TextColumn::make('price')
+                    ->money('INR', true)
+                    ->sortable()
+                    ->weight('semibold')
+                    ->color('success'),
+                    
+                IconColumn::make('is_active')
+                    ->label('Status')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+                    
+                TextColumn::make('created_at')
+                    ->label('Added')
+                    ->dateTime('M d, Y')
+                    ->sortable()
+                    ->toggleable(),
             ])
-            ->headerActions([
-                //
-            ])
-            ->recordActions([
-                //
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    //
-                ]),
-            ]);
+            ->paginated([5])
+            ->defaultSort('created_at', 'desc');
     }
 }

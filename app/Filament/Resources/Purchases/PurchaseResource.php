@@ -18,7 +18,15 @@ class PurchaseResource extends Resource
 {
     protected static ?string $model = Purchase::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingCart;
+    
+    protected static ?string $navigationLabel = 'Purchases';
+    
+    protected static ?string $modelLabel = 'Purchase';
+    
+    protected static ?string $pluralModelLabel = 'Purchases';
+    
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'id';
 
@@ -46,5 +54,15 @@ class PurchaseResource extends Resource
             'create' => CreatePurchase::route('/create'),
             'edit' => EditPurchase::route('/{record}/edit'),
         ];
+    }
+    
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'info';
     }
 }

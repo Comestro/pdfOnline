@@ -18,7 +18,15 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyRupee;
+    
+    protected static ?string $navigationLabel = 'Transactions';
+    
+    protected static ?string $modelLabel = 'Transaction';
+    
+    protected static ?string $pluralModelLabel = 'Transactions';
+    
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'id';
 
@@ -46,5 +54,15 @@ class TransactionResource extends Resource
             'create' => CreateTransaction::route('/create'),
             'edit' => EditTransaction::route('/{record}/edit'),
         ];
+    }
+    
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'pending')->count() ?: null;
+    }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 }
