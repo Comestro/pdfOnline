@@ -30,23 +30,33 @@
     </header>
 
     <main class="container mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6">{{ $document->title }}</h1>
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Khata No. - <span
+                class="text-gray-500">{{ $document->title }}</span></h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="bg-white border border-gray-200 rounded p-4">
-                <div class="flex justify-between py-1"><span class="text-gray-600">Document Type</span><span class="font-medium">{{ $document->document_type }}</span></div>
-                <div class="flex justify-between py-1"><span class="text-gray-600">District</span><span class="font-medium">{{ $document->district }}</span></div>
-                <div class="flex justify-between py-1"><span class="text-gray-600">Anchal</span><span class="font-medium">{{ $document->anchal }}</span></div>
-                <div class="flex justify-between py-1"><span class="text-gray-600">Mauza</span><span class="font-medium">{{ $document->mauza }}</span></div>
-                <div class="flex justify-between py-1"><span class="text-gray-600">Thana No</span><span class="font-medium">{{ $document->thana_no }}</span></div>
-                <div class="flex justify-between py-1"><span class="text-gray-600">Status</span><span class="font-medium">{{ $document->is_active ? 'Active' : 'Inactive' }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Document Type</span><span
+                        class="font-medium">{{ $document->document_type }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">District</span><span
+                        class="font-medium">{{ $document->district }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Anchal</span><span
+                        class="font-medium">{{ $document->anchal }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Mauza</span><span
+                        class="font-medium">{{ $document->mauza }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Thana No</span><span
+                        class="font-medium">{{ $document->thana_no }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Status</span><span
+                        class="font-medium">{{ $document->is_active ? 'Active' : 'Inactive' }}</span></div>
             </div>
             <div class="bg-white border border-gray-200 rounded p-4">
-                <div class="flex justify-between py-1"><span class="text-gray-600">Primary File</span><span class="font-medium">{{ $document->file_path ? basename($document->file_path) : '-' }}</span></div>
-                <div class="flex justify-between py-1"><span class="text-gray-600">Primary Price</span><span class="font-medium">₹{{ number_format($document->price, 2) }}</span></div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Primary File</span><span
+                        class="font-medium">{{ $document->file_path ? basename($document->file_path) : '-' }}</span>
+                </div>
+                <div class="flex justify-between py-1"><span class="text-gray-600">Primary Price</span><span
+                        class="font-medium">₹{{ number_format($document->price, 2) }}</span></div>
             </div>
-            
+
         </div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-6">Khata No. - <span class="text-gray-500">{{ $document->title }}</span></h1>
+
 
         <!-- Document Preview -->
         <div class="preview-container relative rounded-lg mb-8 overflow-hidden">
@@ -56,33 +66,32 @@
                 @if($isPdf)
 
                     <div class="preview-container relative rounded-lg mb-8 overflow-hidden border border-gray-200 bg-white">
-    <!-- Mobile warning -->
-    <div id="mobileWarning" class="md:hidden bg-blue-50 border-b border-blue-200 p-3 text-sm text-blue-800 text-center hidden">
-        <div class="flex items-center justify-center space-x-2">
-            <span>📱</span>
-            <span>Viewing PDF on mobile. Pinch to zoom.</span>
-        </div>
-    </div>
-    
-    <!-- PDF Container with responsive height -->
-    <div class="relative w-full h-[70vh] md:h-[160vh] lg:h-[140vh] overflow-auto md:overflow-hidden">
-        <iframe id="securePDF" 
-                src="{{ $previewDataUri }}#toolbar=0&navpanes=0&scrollbar=1&view=FitV"
-                class="w-full h-full min-h-[500px] md:min-h-[800px] border-none"
-                allow="clipboard-read; clipboard-write"
-                loading="eager"
-                style="transform: scale(1); transform-origin: 0 0;">
-        </iframe>
+                        <!-- Mobile warning -->
+                        <div id="mobileWarning"
+                            class="md:hidden bg-blue-50 border-b border-blue-200 p-3 text-sm text-blue-800 text-center hidden">
+                            <div class="flex items-center justify-center space-x-2">
+                                <span>📱</span>
+                                <span>Viewing PDF on mobile. Pinch to zoom.</span>
+                            </div>
+                        </div>
 
-        <!-- Security Overlay -->
-        <div id="securityOverlay" class="absolute inset-0 z-10" style="pointer-events: auto;"></div>
-    </div>
-    
-    <!-- Mobile help text -->
-    <div class="md:hidden bg-gray-50 border-t border-gray-200 p-2 text-xs text-gray-600 text-center">
-        Use two fingers to scroll horizontally in the PDF
-    </div>
-</div>
+                        <!-- PDF Container with responsive height -->
+                        <div class="relative w-full h-[70vh] md:h-[160vh] lg:h-[140vh] overflow-auto md:overflow-hidden">
+                            <iframe id="securePDF" src="{{ $previewDataUri }}#toolbar=0&navpanes=0&scrollbar=1&view=FitV"
+                                class="w-full h-full min-h-[500px] md:min-h-[800px] border-none"
+                                allow="clipboard-read; clipboard-write" loading="eager"
+                                style="transform: scale(1); transform-origin: 0 0;">
+                            </iframe>
+
+                            <!-- Security Overlay -->
+                            <div id="securityOverlay" class="absolute inset-0 z-10" style="pointer-events: auto;"></div>
+                        </div>
+
+                        <!-- Mobile help text -->
+                        <div class="md:hidden bg-gray-50 border-t border-gray-200 p-2 text-xs text-gray-600 text-center">
+                            Use two fingers to scroll horizontally in the PDF
+                        </div>
+                    </div>
                 @else
                     <div class="flex justify-center items-center w-full h-[120vh] bg-white">
                         <img src="{{ $previewDataUri }}" alt="Document Preview"
@@ -177,88 +186,88 @@
     });
 
 
-     document.addEventListener('DOMContentLoaded', () => {
-            const previewContainer = document.querySelector('.preview-container');
-            const securityOverlay = document.getElementById('securityOverlay');
-            const ACCESS_DURATION = 600000; // 10 minutes (in ms)
-            
-            if (!previewContainer) return;
+    document.addEventListener('DOMContentLoaded', () => {
+        const previewContainer = document.querySelector('.preview-container');
+        const securityOverlay = document.getElementById('securityOverlay');
+        const ACCESS_DURATION = 600000; // 10 minutes (in ms)
 
-            // Enhanced security event handlers
-            const blockEvent = (e) => {
-                // Block right-click
-                if (e.type === 'contextmenu') {
+        if (!previewContainer) return;
+
+        // Enhanced security event handlers
+        const blockEvent = (e) => {
+            // Block right-click
+            if (e.type === 'contextmenu') {
+                e.preventDefault();
+                showWarning('⚠️ Right-click disabled for security');
+                return false;
+            }
+
+            // Block keyboard shortcuts
+            if (e.type === 'keydown') {
+                const forbiddenCombos = [
+                    e.ctrlKey && ['s', 'p', 'u', 'c', 'a'].includes(e.key.toLowerCase()),
+                    e.metaKey && ['s', 'p', 'u', 'c', 'a'].includes(e.key.toLowerCase()),
+                    e.key === 'PrintScreen',
+                    (e.key === 'S' && e.shiftKey && e.metaKey), // macOS screenshot
+                    (e.shiftKey && e.key === 'S' && e.ctrlKey), // Windows + Shift + S
+                    e.key === 'F12', // DevTools
+                    (e.ctrlKey && e.shiftKey && ['i', 'c', 'j'].includes(e.key.toLowerCase())), // DevTools shortcuts
+                ];
+
+                if (forbiddenCombos.some(Boolean)) {
                     e.preventDefault();
-                    showWarning('⚠️ Right-click disabled for security');
+                    e.stopPropagation();
+                    showWarning('⚠️ Action blocked for security');
                     return false;
                 }
-                
-                // Block keyboard shortcuts
-                if (e.type === 'keydown') {
-                    const forbiddenCombos = [
-                        e.ctrlKey && ['s', 'p', 'u', 'c', 'a'].includes(e.key.toLowerCase()),
-                        e.metaKey && ['s', 'p', 'u', 'c', 'a'].includes(e.key.toLowerCase()),
-                        e.key === 'PrintScreen',
-                        (e.key === 'S' && e.shiftKey && e.metaKey), // macOS screenshot
-                        (e.shiftKey && e.key === 'S' && e.ctrlKey), // Windows + Shift + S
-                        e.key === 'F12', // DevTools
-                        (e.ctrlKey && e.shiftKey && ['i', 'c', 'j'].includes(e.key.toLowerCase())), // DevTools shortcuts
-                    ];
+            }
 
-                    if (forbiddenCombos.some(Boolean)) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        showWarning('⚠️ Action blocked for security');
-                        return false;
-                    }
-                }
-                
-                // Block drag operations
-                if (e.type === 'dragstart') {
-                    e.preventDefault();
-                    return false;
-                }
-            };
-
-            // Apply event listeners to the security overlay
-            ['contextmenu', 'keydown', 'dragstart'].forEach(event => {
-                securityOverlay.addEventListener(event, blockEvent);
-            });
-
-            // Also apply to document for global key blocking
-            document.addEventListener('keydown', blockEvent);
-            
-            // Disable text selection in the entire preview area
-            previewContainer.addEventListener('selectstart', (e) => {
+            // Block drag operations
+            if (e.type === 'dragstart') {
                 e.preventDefault();
                 return false;
-            });
+            }
+        };
 
-            // Detect DevTools open
-            let devToolsDetected = false;
-            const detectDevTools = setInterval(() => {
-                const threshold = 160;
-                const widthThreshold = window.outerWidth - window.innerWidth > threshold;
-                const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-                
-                if (widthThreshold || heightThreshold) {
-                    if (!devToolsDetected) {
-                        devToolsDetected = true;
-                        showWarning('⚠️ Developer tools detected! Actions blocked.');
-                        // Optionally blur content when DevTools detected
-                        document.querySelector('.blur-content').style.filter = 'blur(5px)';
-                    }
-                } else {
-                    if (devToolsDetected) {
-                        devToolsDetected = false;
-                        document.querySelector('.blur-content').style.filter = 'blur(3px)';
-                    }
+        // Apply event listeners to the security overlay
+        ['contextmenu', 'keydown', 'dragstart'].forEach(event => {
+            securityOverlay.addEventListener(event, blockEvent);
+        });
+
+        // Also apply to document for global key blocking
+        document.addEventListener('keydown', blockEvent);
+
+        // Disable text selection in the entire preview area
+        previewContainer.addEventListener('selectstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // Detect DevTools open
+        let devToolsDetected = false;
+        const detectDevTools = setInterval(() => {
+            const threshold = 160;
+            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+
+            if (widthThreshold || heightThreshold) {
+                if (!devToolsDetected) {
+                    devToolsDetected = true;
+                    showWarning('⚠️ Developer tools detected! Actions blocked.');
+                    // Optionally blur content when DevTools detected
+                    document.querySelector('.blur-content').style.filter = 'blur(5px)';
                 }
-            }, 500);
+            } else {
+                if (devToolsDetected) {
+                    devToolsDetected = false;
+                    document.querySelector('.blur-content').style.filter = 'blur(3px)';
+                }
+            }
+        }, 500);
 
-            // Auto-hide content after duration
-            const timeoutId = setTimeout(() => {
-                previewContainer.innerHTML = `
+        // Auto-hide content after duration
+        const timeoutId = setTimeout(() => {
+            previewContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center w-full h-64 bg-gray-800 text-white">
                         <svg class="w-12 h-12 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -266,57 +275,57 @@
                         <p class="text-lg">Document access expired. Please reopen to view again.</p>
                     </div>
                 `;
-                clearInterval(detectDevTools);
-                clearTimeout(timeoutId);
-            }, ACCESS_DURATION);
+            clearInterval(detectDevTools);
+            clearTimeout(timeoutId);
+        }, ACCESS_DURATION);
 
-            // Show security warnings
-            function showWarning(msg) {
-                const existing = document.querySelector('.security-warning');
-                if (existing) existing.remove();
+        // Show security warnings
+        function showWarning(msg) {
+            const existing = document.querySelector('.security-warning');
+            if (existing) existing.remove();
 
-                const div = document.createElement('div');
-                div.className = 'security-warning fixed top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white px-5 py-3 rounded-lg shadow-lg z-50 text-sm';
-                div.textContent = msg;
-                document.body.appendChild(div);
-                setTimeout(() => div.remove(), 3000);
+            const div = document.createElement('div');
+            div.className = 'security-warning fixed top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white px-5 py-3 rounded-lg shadow-lg z-50 text-sm';
+            div.textContent = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
+        }
+
+        // Additional protection: periodically check for iframe manipulation
+        setInterval(() => {
+            const iframe = document.getElementById('securePDF');
+            if (iframe) {
+                // Ensure iframe security attributes remain intact
+                iframe.style.pointerEvents = 'none';
+
+                // Check if iframe has been modified or replaced
+                if (!iframe.classList.contains('no-pointer-events')) {
+                    iframe.classList.add('no-pointer-events');
+                }
+            }
+        }, 1000);
+    });
+
+    // Add this to your security script
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check if mobile device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (isMobile) {
+            console.log('Mobile device detected - applying mobile optimizations');
+
+            // Adjust iframe height for mobile
+            const iframe = document.getElementById('securePDF');
+            if (iframe) {
+                iframe.style.height = '70vh';
+                iframe.style.minHeight = '400px';
             }
 
-            // Additional protection: periodically check for iframe manipulation
-            setInterval(() => {
-                const iframe = document.getElementById('securePDF');
-                if (iframe) {
-                    // Ensure iframe security attributes remain intact
-                    iframe.style.pointerEvents = 'none';
-                    
-                    // Check if iframe has been modified or replaced
-                    if (!iframe.classList.contains('no-pointer-events')) {
-                        iframe.classList.add('no-pointer-events');
-                    }
-                }
-            }, 1000);
-        });
-
-        // Add this to your security script
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if mobile device
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-        console.log('Mobile device detected - applying mobile optimizations');
-        
-        // Adjust iframe height for mobile
-        const iframe = document.getElementById('securePDF');
-        if (iframe) {
-            iframe.style.height = '70vh';
-            iframe.style.minHeight = '400px';
+            // Show mobile-specific message
+            const mobileWarning = document.getElementById('mobileWarning');
+            if (mobileWarning) {
+                mobileWarning.style.display = 'block';
+            }
         }
-        
-        // Show mobile-specific message
-        const mobileWarning = document.getElementById('mobileWarning');
-        if (mobileWarning) {
-            mobileWarning.style.display = 'block';
-        }
-    }
-});
+    });
 </script>
