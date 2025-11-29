@@ -60,19 +60,6 @@
                         ->searchable()
                         ->sortable(),
                         
-                    TextColumn::make('additional_title')
-                        ->label('File Title')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->wrap(),
-                        
-                    TextColumn::make('additional_file_path')
-                        ->label('File Name')
-                        ->formatStateUsing(fn ($state, $record) => basename($state ?? $record->file_path))
-                        ->icon('heroicon-o-document-arrow-down')
-                        ->color('gray')
-                        ->searchable()
-                        ->toggleable(),
-                        
                     TextColumn::make('price')
                         ->label('Price')
                         ->getStateUsing(fn ($record) => $record->additional_price ?? $record->price)
