@@ -98,7 +98,7 @@
                         ->falseLabel('Inactive only'),
                 ])
                 ->recordActions([
-                    ViewAction::make(),
+
                     EditAction::make(),
                 ])
                 ->toolbarActions([
