@@ -16,8 +16,6 @@ class Document extends Model
         'anchal',
         'mauza',
         'thana_no',
-        'file_path',
-        'price',
         'is_active',
     ];
 

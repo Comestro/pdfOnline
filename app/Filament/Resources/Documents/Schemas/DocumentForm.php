@@ -3,11 +3,11 @@
 namespace App\Filament\Resources\Documents\Schemas;
 
 use App\Models\Document;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Schemas\Components\Section as ComponentsSection;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class DocumentForm
@@ -16,11 +16,16 @@ class DocumentForm
     {
         return $schema
             ->components([
-                ComponentsSection::make('Document Details')
-                    ->columns(3)
+                Section::make('Document Details')
+                    ->description('Enter the basic information about the document.')
+                    ->icon('heroicon-o-document-text')
+                    ->columns(2)
                     ->schema([
                         TextInput::make('title')
-                            ->required(),
+                            ->label('Title')
+                            ->required()
+                            ->columnSpanFull(),
+                            
                         TextInput::make('document_type')
                             ->label('Document Type')
                             ->datalist(
@@ -30,6 +35,7 @@ class DocumentForm
                                     ->toArray()
                             )
                             ->required(),
+                            
                         TextInput::make('district')
                             ->label('District')
                             ->datalist(
@@ -39,6 +45,7 @@ class DocumentForm
                                     ->toArray()
                             )
                             ->required(),
+                            
                         TextInput::make('anchal')
                             ->label('Anchal')
                             ->datalist(
@@ -48,6 +55,7 @@ class DocumentForm
                                     ->toArray()
                             )
                             ->required(),
+                            
                         TextInput::make('mauza')
                             ->label('Mauza')
                             ->datalist(
@@ -57,6 +65,7 @@ class DocumentForm
                                     ->toArray()
                             )
                             ->required(),
+                            
                         TextInput::make('thana_no')
                             ->label('Thana No')
                             ->datalist(
@@ -66,40 +75,18 @@ class DocumentForm
                                     ->toArray()
                             )
                             ->required(),
+                            
+                        Hidden::make('is_active')
+                            ->default(true),
                     ]),
 
-                ComponentsSection::make('Primary File')
-                    ->columns(1)
-                    ->schema([
-                        FileUpload::make('file_path')
-                            ->label('Upload PDF')
-                            ->disk('private')
-                            ->directory('documents')
-                            ->preserveFilenames()
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->maxSize(512000)
-                            ->enableOpen()
-                            ->enableDownload()
-                            ->visibility('private')
-                            ->required(),
-                    ]),
-
-                ComponentsSection::make('Pricing & Status')
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('price')
-                            ->required()
-                            ->numeric()
-                            ->prefix('₹'),
-                        Toggle::make('is_active')
-                            ->required(),
-                    ]),
-
-                ComponentsSection::make('Additional PDFs')
-                    ->columns(1)
+                Section::make('Document Files')
+                    ->description('Upload the PDF files associated with this document.')
+                    ->icon('heroicon-o-paper-clip')
                     ->schema([
                         Repeater::make('files')
                             ->relationship('files')
+                            ->label('Files')
                             ->columns(3)
                             ->schema([
                                 FileUpload::make('file_path')
@@ -112,16 +99,26 @@ class DocumentForm
                                     ->enableOpen()
                                     ->enableDownload()
                                     ->visibility('private')
-                                    ->required(),
+                                    ->required()
+                                    ->columnSpanFull(),
+                                    
                                 TextInput::make('title')
-                                    ->label('Name')
+                                    ->label('File Name')
                                     ->required(),
+                                    
+                                TextInput::make('khata_no')
+                                    ->label('Khata No')
+                                    ->placeholder('Optional'),
+                                    
                                 TextInput::make('price')
                                     ->label('Price')
                                     ->numeric()
                                     ->prefix('₹')
                                     ->required(),
-                            ]),
+                            ])
+                            ->defaultItems(1)
+                            ->grid(1)
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
                     ]),
             ]);
     }

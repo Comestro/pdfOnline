@@ -19,6 +19,7 @@ class DocumentSearch extends Component
     public $anchal = '';
     public $mauza = '';
     public $thana_no = '';
+    public $khata_no = '';
     public $result = false;
     public $showModal = false;
 
@@ -39,7 +40,7 @@ class DocumentSearch extends Component
 
    public function resetSelection()
 {
-    $this->reset(['document_type', 'district', 'anchal', 'mauza', 'thana_no']);
+    $this->reset(['document_type', 'district', 'anchal', 'mauza', 'thana_no', 'khata_no']);
     $this->result = false;
     $this->resetPage();
 }
@@ -106,7 +107,7 @@ class DocumentSearch extends Component
     {
         $documents = collect();
         if ($this->result) {
-            $query = Document::query()->where('is_active', true)->with('files');
+            $query = Document::query()->where('is_active', true);
 
             if ($this->document_type) {
                 $query->where('document_type', 'like', '%' . $this->document_type . '%');
@@ -126,6 +127,18 @@ class DocumentSearch extends Component
 
             if ($this->thana_no) {
                 $query->where('thana_no', 'like', '%' . $this->thana_no . '%');
+            }
+
+            if ($this->khata_no) {
+                $query->whereHas('files', function ($q) {
+                    $q->where('khata_no', 'like', '%' . $this->khata_no . '%');
+                });
+                
+                $query->with(['files' => function ($q) {
+                    $q->where('khata_no', 'like', '%' . $this->khata_no . '%');
+                }]);
+            } else {
+                $query->with('files');
             }
 
             $documents = $query->paginate(10);

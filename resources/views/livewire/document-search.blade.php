@@ -90,6 +90,9 @@
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            <div>
+                <input type="text" wire:model.live="khata_no" placeholder="Khata No (Optional)" class="border p-2 rounded w-full">
+            </div>
         </div>
 
         <div class="flex flex-wrap gap-3 mb-6">
@@ -108,42 +111,28 @@
                 <table class="min-w-full border border-gray-200 bg-white rounded-md overflow-hidden">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="border p-3 text-left">Khata No.</th>
                             <th class="border p-3 text-left">District</th>
                             <th class="border p-3 text-left">Anchal</th>
                             <th class="border p-3 text-left">Mauza</th>
+                            <th class="border p-3 text-left">Khata No</th>
                             <th class="border p-3 text-left">File Title</th>
-                            <th class="border p-3 text-left">File Name</th>
                             <th class="border p-3 text-left">Price</th>
+
                             <th class="border p-3 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($documents as $document)
-                            <tr class="hover:bg-gray-50">
-                                <td class="border p-3">{{ $document->title }}</td>
-                                <td class="border p-3">{{ $document->district }}</td>
-                                <td class="border p-3">{{ $document->anchal }}</td>
-                                <td class="border p-3">{{ $document->mauza }}</td>
-                                <td class="border p-3">-</td>
-                                <td class="border p-3">{{ $document->file_path ? basename($document->file_path) : '-' }}</td>
-                                <td class="border p-3">₹{{ $document->price }}</td>
-                                <td class="border p-3 text-center">
-                                    <a href="{{ url('/document/' . $document->id . '?type=primary') }}"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded">
-                                        Preview
-                                    </a>
-                                </td>
-                            </tr>
+
                             @foreach($document->files as $file)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="border p-3">{{ $document->title }}</td>
                                     <td class="border p-3">{{ $document->district }}</td>
                                     <td class="border p-3">{{ $document->anchal }}</td>
                                     <td class="border p-3">{{ $document->mauza }}</td>
+                                    <td class="border p-3">{{ $file->khata_no ?? '-' }}</td>
                                     <td class="border p-3">{{ $file->title ?? '-' }}</td>
-                                    <td class="border p-3">{{ basename($file->file_path) }}</td>
-                                    <td class="border p-3">₹{{ $file->price ?? $document->price }}</td>
+                                    <td class="border p-3">₹{{ $file->price ?? '-' }}</td>
+
                                     <td class="border p-3 text-center">
                                         <a href="{{ url('/document/' . $document->id . '?type=additional&file_id=' . $file->id) }}"
                                             class="bg-blue-500 text-white px-4 py-2 rounded">

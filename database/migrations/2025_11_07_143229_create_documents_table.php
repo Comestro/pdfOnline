@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('anchal');
             $table->string('mauza');
             $table->string('thana_no');
-            $table->string('file_path');
-            $table->decimal('price', 8, 2);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

@@ -13,6 +13,7 @@ class DocumentFile extends Model
         'document_id',
         'file_path',
         'title',
+        'khata_no',
         'price',
     ];
 

@@ -60,14 +60,6 @@
                         ->searchable()
                         ->sortable(),
                         
-                    TextColumn::make('price')
-                        ->label('Price')
-                        ->getStateUsing(fn ($record) => $record->additional_price ?? $record->price)
-                        ->money('INR', true)
-                        ->sortable()
-                        ->weight('semibold')
-                        ->color('success'),
-                        
                     IconColumn::make('is_active')
                         ->label('Status')
                         ->boolean()
