@@ -115,6 +115,32 @@ class DocumentForm
                                     ->numeric()
                                     ->prefix('₹')
                                     ->required(),
+                                    
+                                \Filament\Forms\Components\Checkbox::make('copy_price_to_all')
+                                    ->label('Copy Price to All')
+                                    ->live()
+                                    ->afterStateUpdated(function ($get, $set, $state) {
+                                        if ($state) {
+                                            $currentPrice = $get('price');
+                                            // Get the files array from the parent context
+                                            // We need to go up levels. 
+                                            // files.uuid.copy_price_to_all -> ../ -> files.uuid -> ../ -> files
+                                            // So ../../files should work if we are at the root of the item.
+                                            // However, $get('../../files') gets the 'files' component state from the root container.
+                                            
+                                            $files = $get('../../files');
+                                            
+                                            if (is_array($files)) {
+                                                foreach ($files as $key => $file) {
+                                                    $files[$key]['price'] = $currentPrice;
+                                                }
+                                                $set('../../files', $files);
+                                            }
+                                            
+                                            $set('copy_price_to_all', false);
+                                        }
+                                    })
+                                    ->dehydrated(false),
                             ])
                             ->defaultItems(1)
                             ->grid(1)
